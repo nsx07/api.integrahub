@@ -91,5 +91,56 @@ namespace IntegraHub.Service.Services
                 };
             }
         }
+
+        public async Task<ClientResultDto> RemoveClient(ClientDto clientDto)
+        {
+            try
+            {
+                _vercelProvider.Request.Resource = $"v9/projects/agendahub/domains/{clientDto.Name.AppendIfNotPresent(".agendahub.app")}";
+                _vercelProvider.Request.Method = Method.Delete;
+
+                _goDaddyProvider.Request.Resource = $"v1/domains/agendahub.app/records/CNAME/{clientDto.Name.RemoveIfPresent(".agendahub.app")}";
+                _goDaddyProvider.Request.Method = Method.Delete;
+
+                var responseVercel = await _vercelProvider.Client.ExecuteAsync(_vercelProvider.Request);
+
+                if (!responseVercel.IsSuccessful)
+                {
+                    return new ClientResultDto
+                    {
+                        Success = false,
+                        Message = "Vercel error: " + responseVercel.ErrorMessage,
+                        ProvidersMessages = new string[] { responseVercel.Content }
+                    };
+                }
+
+                var responseGoDaddy = await _goDaddyProvider.Client.ExecuteAsync(_goDaddyProvider.Request);
+
+                if (!responseGoDaddy.IsSuccessful)
+                {
+                    return new ClientResultDto
+                    {
+                        Success = false,
+                        Message = "GoDaddy error: " + responseGoDaddy.ErrorMessage,
+                        ProvidersMessages = new string[] { responseGoDaddy.Content }
+                    };
+                }
+
+                return new ClientResultDto
+                {
+                    Success = true,
+                    Message = "Client successfully removed!",
+                    ProvidersMessages = new string[] { responseVercel.Content, responseGoDaddy.Content }
+                };
+            }
+            catch (Exception e)
+            {
+                return new ClientResultDto { 
+                    Success = false,
+                    Message = e.Message,
+                    ProvidersMessages = new string[] { e.Message }
+                };
+            }
+        }
     }
 }

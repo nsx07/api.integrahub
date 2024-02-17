@@ -10,5 +10,6 @@ namespace IntegraHub.Domain.Interfaces
     public interface IEnvironmentIntegrationService
     {
         Task<ClientResultDto> AddNewClient(ClientDto clientDto);
+        Task<ClientResultDto> RemoveClient(ClientDto clientDto);
     }
 }
