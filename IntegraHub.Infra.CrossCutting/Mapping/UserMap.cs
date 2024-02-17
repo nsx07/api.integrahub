@@ -12,6 +12,9 @@ namespace IntegraHub.Infra.Data.Mapping
 
             builder.HasKey(prop => prop.Id);
 
+            builder.HasIndex(prop => prop.Email)
+                .IsUnique();
+
             builder.Property(prop => prop.Name)
                 .HasConversion(prop => prop.ToString(), prop => prop)
                 .IsRequired()
