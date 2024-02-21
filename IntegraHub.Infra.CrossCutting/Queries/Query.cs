@@ -14,6 +14,18 @@ namespace IntegraHub.Infra.Data.Queries
         [UseProjection]
         [UseFiltering]
         [UseSorting]
-        public IQueryable<User> GetUsers(PostgresContext dbContext) => dbContext.Users;
+        public IQueryable<User> GetUsers(PostgresContext dbContext) => dbContext.User;
+
+        [UseOffsetPaging(MaxPageSize = 100, IncludeTotalCount = true)]
+        [UseProjection]
+        [UseFiltering]
+        [UseSorting]
+        public IQueryable<Company> GetCompanies(PostgresContext dbContext) => dbContext.Company;
+
+        [UseOffsetPaging(MaxPageSize = 100, IncludeTotalCount = true)]
+        [UseProjection]
+        [UseFiltering]
+        [UseSorting]
+        public IQueryable<CompanyParameter> GetCompanyParameters(PostgresContext dbContext) => dbContext.CompanyParameter;
     }
 }

@@ -44,12 +44,14 @@ namespace IntegraHub.Infra.CrossCuttingDI.DependencyInjection
         public static void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<ICompanyService, CompanyService>();
             services.AddTransient<IEnvironmentIntegrationService, EnvironmentIntegrationService>();
         }
 
         public static void ConfigureRepositories(IServiceCollection services)
         {
-            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<ICompanyRepository, CompanyRepository>();
         }
     }
 }

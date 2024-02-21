@@ -12,26 +12,33 @@ namespace IntegraHub.Infra.Data.Mapping
 
             builder.HasKey(prop => prop.Id);
 
-            builder.HasIndex(prop => prop.Email)
-                .IsUnique();
+            builder.Property(prop => prop.Id)
+                .HasColumnName(nameof(User.Id).ToLower())
+                .ValueGeneratedOnAdd();
+
+            builder.Property(prop => prop.CompanyId)
+                .HasColumnName(nameof(User.CompanyId).ToLower())
+                .IsRequired();
 
             builder.Property(prop => prop.Name)
-                .HasConversion(prop => prop.ToString(), prop => prop)
-                .IsRequired()
-                .HasColumnName("Name")
-                .HasColumnType("varchar(100)");
+                .HasColumnName(nameof(User.Name).ToLower())
+                .IsRequired();
 
             builder.Property(prop => prop.Email)
-               .HasConversion(prop => prop.ToString(), prop => prop)
-               .IsRequired()
-               .HasColumnName("Email")
-               .HasColumnType("varchar(100)");
+               .HasColumnName(nameof(User.Email).ToLower())
+               .IsRequired();
 
             builder.Property(prop => prop.Password)
-                .HasConversion(prop => prop.ToString(), prop => prop)
-                .IsRequired()
-                .HasColumnName("Password")
-                .HasColumnType("varchar(100)");
+                .HasColumnName(nameof(User.Password).ToLower())
+                .IsRequired();
+
+            builder.HasIndex(prop => new { prop.Email, prop.CompanyId})
+                .IsUnique();
+
+            builder.HasOne(prop => prop.Company)
+                .WithMany(prop => prop.Users)
+                .HasForeignKey(prop => prop.CompanyId);
+
         }
     }
 }

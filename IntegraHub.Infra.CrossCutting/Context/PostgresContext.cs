@@ -6,13 +6,17 @@ namespace IntegraHub.Infra.Data.Context
 {
     public class PostgresContext(DbContextOptions<PostgresContext> options) : DbContext(options)
     {
-        public DbSet<User> Users { get; set; }
+        public DbSet<User> User { get; set; }
+        public DbSet<Company> Company { get; set; }
+        public DbSet<CompanyParameter> CompanyParameter { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<User>(new UserMap().Configure);
+            modelBuilder.Entity<Company>(new CompanyMap().Configure);
+            modelBuilder.Entity<CompanyParameter>(new CompanyParameterMap().Configure);
         }
     }
 }
