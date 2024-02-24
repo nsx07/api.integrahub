@@ -8,6 +8,7 @@ using IntegraHub.Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using IntegraHub.Infra.CrossCutting.Utils;
 using IntegraHub.Infra.Data.Queries;
+using IntegraHub.Infra.Data.Subscriptions;
 
 namespace IntegraHub.Infra.CrossCuttingDI.DependencyInjection
 {
@@ -35,6 +36,7 @@ namespace IntegraHub.Infra.CrossCuttingDI.DependencyInjection
                 .AddGraphQLServer()
                 .RegisterDbContext<PostgresContext>()
                 .AddMaxExecutionDepthRule(100)
+                .AddSubscriptionType<Subscriptions>()
                 .AddQueryType<Query>()
                 .AddProjections()
                 .AddFiltering()
