@@ -32,6 +32,33 @@ namespace IntegraHub.Infra.Data.Mapping
                 .HasColumnName(nameof(User.Password).ToLower())
                 .IsRequired();
 
+            builder.Property(prop => prop.DateBirth)
+                .HasColumnName(nameof(User.DateBirth).ToLower())
+                .IsRequired();
+
+            builder.Property(prop => prop.IsActive)
+                .HasColumnName(nameof(User.IsActive).ToLower())
+                .IsRequired();
+
+            builder.Property(prop => prop.Surname)
+                .HasColumnName(nameof(User.Surname).ToLower())
+                .IsRequired();
+
+            builder.Property(prop => prop.Phone)
+                .HasColumnName(nameof(User.Phone).ToLower())
+                .IsRequired();
+
+            builder.Property(prop => prop.Color)
+                .HasColumnName(nameof(User.Color).ToLower());
+
+            builder.Property(prop => prop.UserTypeId)
+                .HasColumnName(nameof(User.UserTypeId).ToLower())
+                .IsRequired();
+           
+            builder.HasOne(prop => prop.UserType)
+                .WithMany()
+                .HasForeignKey(prop => prop.Id);
+
             builder.HasIndex(prop => new { prop.Email, prop.CompanyId})
                 .IsUnique();
 

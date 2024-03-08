@@ -6,7 +6,7 @@ namespace IntegraHub.Service.Services
 {
     public abstract class BaseService<TEntity, TKey>(IBaseRepository<TEntity, TKey> baseRepository) : IBaseService<TEntity, TKey> where TEntity : BaseEntity<TKey>
     {
-        private readonly IBaseRepository<TEntity, TKey> _baseRepository = baseRepository;
+        protected readonly IBaseRepository<TEntity, TKey> _baseRepository = baseRepository;
 
         public async Task<TEntity> Add<TValidator>(TEntity obj) where TValidator : AbstractValidator<TEntity>
         {

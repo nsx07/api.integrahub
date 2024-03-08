@@ -9,5 +9,6 @@ namespace IntegraHub.Domain.Interfaces
 {
     public interface ICompanyService: IBaseService<Company, long>
     {
+        Company? GetByDomainName(string domain);
     }
 }

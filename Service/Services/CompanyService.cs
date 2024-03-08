@@ -1,5 +1,6 @@
 ﻿using IntegraHub.Domain.Entities;
 using IntegraHub.Domain.Interfaces;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,5 +11,9 @@ namespace IntegraHub.Service.Services
 {
     public class CompanyService(ICompanyRepository baseRepository) : BaseService<Company, long>(baseRepository), ICompanyService
     {
+        public Company? GetByDomainName(string domain)
+        {
+            return _baseRepository.Query().Where(x => x.DomainName == domain).FirstOrDefault();
+        }
     }
 }

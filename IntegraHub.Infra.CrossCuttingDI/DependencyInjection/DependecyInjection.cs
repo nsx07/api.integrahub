@@ -9,6 +9,9 @@ using Microsoft.EntityFrameworkCore;
 using IntegraHub.Infra.CrossCutting.Utils;
 using IntegraHub.Infra.Data.Queries;
 using IntegraHub.Infra.Data.Subscriptions;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using IntegraHub.Service.Services.Auth;
 
 namespace IntegraHub.Infra.CrossCuttingDI.DependencyInjection
 {
@@ -16,6 +19,9 @@ namespace IntegraHub.Infra.CrossCuttingDI.DependencyInjection
     {
         public static void Configure(IServiceCollection services, IConfiguration configuration)
         {
+            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddScoped<CurrentClientResolver>();
+
             ConfigureDb(services, configuration);
             ConfigureServices(services);
             ConfigureRepositories(services);
@@ -34,6 +40,7 @@ namespace IntegraHub.Infra.CrossCuttingDI.DependencyInjection
 
             services
                 .AddGraphQLServer()
+                .InitializeOnStartup()
                 .RegisterDbContext<PostgresContext>()
                 .AddMaxExecutionDepthRule(100)
                 .AddSubscriptionType<Subscriptions>()
@@ -48,6 +55,7 @@ namespace IntegraHub.Infra.CrossCuttingDI.DependencyInjection
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<ICompanyService, CompanyService>();
             services.AddTransient<IEnvironmentIntegrationService, EnvironmentIntegrationService>();
+            services.AddScoped<IAuthService, AuthService>();
         }
 
         public static void ConfigureRepositories(IServiceCollection services)

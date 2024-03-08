@@ -9,5 +9,7 @@ namespace IntegraHub.Domain.Interfaces
 {
     public interface IUserService: IBaseService<User, long>
     {
+        User? GetUserByLogin(string login);
+        bool CheckPassword(string passwordAttempt, User user);
     }
 }
