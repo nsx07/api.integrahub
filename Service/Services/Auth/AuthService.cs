@@ -45,32 +45,32 @@ namespace IntegraHub.Service.Services.Auth
 
             try
             {
-                var domainStatus = this.ValidDomain(authRequest.Domain);
-                if (domainStatus.Status == DomainStatus.Invalid)
-                {
-                    authResponse.Message = "Domínio inválido.";
-                    return authResponse;
-                }
+                //var domainStatus = this.ValidDomain(authRequest.Domain);
+                //if (domainStatus.Status == DomainStatus.Invalid)
+                //{
+                //    authResponse.Message = "Domínio inválido.";
+                //    return authResponse;
+                //}
 
-                var company = companyService.GetByDomainName(domainStatus.Status == DomainStatus.Valid
-                                        ? authRequest.Domain!
-                                        : configuration["devCompany"] ?? domainStatus.Name!);
+                //var company = companyService.GetByDomainName(domainStatus.Status == DomainStatus.Valid
+                //                        ? authRequest.Domain!
+                //                        : configuration["devCompany"] ?? domainStatus.Name!);
 
-                if (company == null)
-                {
-                    authResponse.Message = "Domínio inválido.";
-                    return authResponse;
-                }
+                //if (company == null)
+                //{
+                //    authResponse.Message = "Domínio inválido.";
+                //    return authResponse;
+                //}
 
-                if (!company.IsActive)
-                {
-                    authResponse.Message = "Conta inativa. Entre em contato com o suporte!";
-                    return authResponse;
-                }
+                //if (!company.IsActive)
+                //{
+                //    authResponse.Message = "Conta inativa. Entre em contato com o suporte!";
+                //    return authResponse;
+                //}
 
-                var token = TokenHelper.GenerateToken(configuration, new Claim[] { new("companyId", company.Id.ToString()) });
-                httpContextAccessor.HttpContext.Request.Headers["Authorization"] = $"Bearer {token}";
-                httpContextAccessor.HttpContext.Request.Headers[$"companyId{httpContextAccessor.HttpContext.Request.Headers.RequestId}"] = company.Id.ToString();
+                //var token = TokenHelper.GenerateToken(configuration, new Claim[] { new("companyId", company.Id.ToString()) });
+                //httpContextAccessor.HttpContext.Request.Headers["Authorization"] = $"Bearer {token}";
+                //httpContextAccessor.HttpContext.Request.Headers[$"companyId{httpContextAccessor.HttpContext.Request.Headers.RequestId}"] = company.Id.ToString();
 
                 if (!string.IsNullOrEmpty(authRequest.Login) && !string.IsNullOrEmpty(authRequest.Password))
                 {
