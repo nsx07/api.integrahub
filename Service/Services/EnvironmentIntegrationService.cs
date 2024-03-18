@@ -31,7 +31,7 @@ namespace IntegraHub.Service.Services
                 _vercelProvider.Request.Method = Method.Post;
                 _vercelProvider.Request.AddJsonBody(new
                 {
-                    name = clientDto.Name!.AppendIfNotPresent(".agendahub.app"),
+                    name = clientDto.DomainName!.AppendIfNotPresent(".agendahub.app"),
                 });
 
 
@@ -53,7 +53,7 @@ namespace IntegraHub.Service.Services
                 {
                     new {
                         data = "cname.vercel-dns.com.",
-                        name = clientDto.Name!.RemoveIfPresent(".agendahub.app"),
+                        name = clientDto.DomainName!.RemoveIfPresent(".agendahub.app"),
                         type = "CNAME",
                         port = 65535,
                         priority = 0,
@@ -96,10 +96,10 @@ namespace IntegraHub.Service.Services
         {
             try
             {
-                _vercelProvider.Request.Resource = $"v9/projects/agendahub/domains/{clientDto.Name.AppendIfNotPresent(".agendahub.app")}";
+                _vercelProvider.Request.Resource = $"v9/projects/agendahub/domains/{clientDto.DomainName.AppendIfNotPresent(".agendahub.app")}";
                 _vercelProvider.Request.Method = Method.Delete;
 
-                _goDaddyProvider.Request.Resource = $"v1/domains/agendahub.app/records/CNAME/{clientDto.Name.RemoveIfPresent(".agendahub.app")}";
+                _goDaddyProvider.Request.Resource = $"v1/domains/agendahub.app/records/CNAME/{clientDto.DomainName.RemoveIfPresent(".agendahub.app")}";
                 _goDaddyProvider.Request.Method = Method.Delete;
 
                 var responseVercel = await _vercelProvider.Client.ExecuteAsync(_vercelProvider.Request);

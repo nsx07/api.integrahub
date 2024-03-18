@@ -1,10 +1,6 @@
-﻿using IntegraHub.Domain.Entities;
+﻿using HotChocolate.Authorization;
+using IntegraHub.Domain.Entities;
 using IntegraHub.Infra.Data.Context;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IntegraHub.Infra.Data.Queries
 {
@@ -14,18 +10,21 @@ namespace IntegraHub.Infra.Data.Queries
         [UseProjection]
         [UseFiltering]
         [UseSorting]
+        [Authorize]
         public IQueryable<User> GetUsers(PostgresContext dbContext) => dbContext.User;
 
         [UseOffsetPaging(MaxPageSize = 100, IncludeTotalCount = true)]
         [UseProjection]
         [UseFiltering]
         [UseSorting]
+        [Authorize]
         public IQueryable<Company> GetCompanies(PostgresContext dbContext) => dbContext.Company;
 
         [UseOffsetPaging(MaxPageSize = 100, IncludeTotalCount = true)]
         [UseProjection]
         [UseFiltering]
         [UseSorting]
+        [Authorize]
         public IQueryable<CompanyParameter> GetCompanyParameters(PostgresContext dbContext) => dbContext.CompanyParameter;
     }
 }

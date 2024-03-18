@@ -19,10 +19,9 @@ namespace IntegraHub.Infra.Data.Mapping
             builder.HasKey(x => x.Id);
 
             builder.Property(prop => prop.Id)
-                .ValueGeneratedOnAdd()
-                .UseIdentityColumn()
                 .HasColumnName(nameof(Company.Id).ToLower())
-                .IsRequired();
+                .IsRequired()
+                .ValueGeneratedOnAdd();
 
             builder.Property(prop => prop.FullName)
                 .HasColumnName(nameof(Company.FullName).ToLower())

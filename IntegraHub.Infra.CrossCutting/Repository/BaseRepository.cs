@@ -12,7 +12,7 @@ namespace IntegraHub.Infra.Data.Repository
         public IQueryable<TEntity> Query() => _postgresContext.Set<TEntity>();  
         public async Task<TKey> Insert(TEntity obj)
         {
-            _postgresContext.Set<TEntity>().Add(obj);
+            _postgresContext.Set<TEntity>().Add(obj).State = EntityState.Added;
             await _postgresContext.SaveChangesAsync();
             return obj.Id;
         }
@@ -27,7 +27,7 @@ namespace IntegraHub.Infra.Data.Repository
         {
             TEntity? obj = await Select(id) ?? throw new Exception($"{typeof(TEntity).Name} with key {id} not found!");
 
-            _postgresContext.Set<TEntity>().Remove(obj);
+            _postgresContext.Set<TEntity>().Remove(obj).State = EntityState.Deleted;
             await _postgresContext.SaveChangesAsync();
         }
 

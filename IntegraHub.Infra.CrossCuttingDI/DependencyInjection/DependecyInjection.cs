@@ -40,9 +40,10 @@ namespace IntegraHub.Infra.CrossCuttingDI.DependencyInjection
 
             services
                 .AddGraphQLServer()
+                .AddAuthorization()
                 .InitializeOnStartup()
                 .RegisterDbContext<PostgresContext>()
-                .AddMaxExecutionDepthRule(100)
+                .AddMaxExecutionDepthRule(30)
                 .AddSubscriptionType<Subscriptions>()
                 .AddQueryType<Query>()
                 .AddProjections()
