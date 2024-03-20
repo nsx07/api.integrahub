@@ -47,6 +47,10 @@ namespace IntegraHub.Infra.Data.Mapping
                 .HasColumnName(nameof(Company.Address).ToLower())
                 .IsRequired();
 
+            builder.Property(prop => prop.Number)
+                .HasColumnName(nameof(Company.Number).ToLower())
+                .IsRequired();
+
             builder.Property(prop => prop.ZipCode)
                 .HasColumnName(nameof(Company.ZipCode).ToLower())
                 .IsRequired();

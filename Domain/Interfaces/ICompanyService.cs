@@ -12,5 +12,6 @@ namespace IntegraHub.Domain.Interfaces
     {
         Company? GetByDomainName(string domain);
         Task<dynamic> RegisterCompany(ClientDto company);
+        Task<dynamic> UnregisterCompany(long id);
     }
 }

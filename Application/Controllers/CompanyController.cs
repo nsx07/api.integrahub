@@ -44,8 +44,7 @@ namespace IntegraHub.Application.Controllers
 
             await ExecuteAsync(async () =>
             {
-                await _companyService.Delete(id);
-                return true;
+                return await _companyService.UnregisterCompany(id);
             });
 
             return new NoContentResult();

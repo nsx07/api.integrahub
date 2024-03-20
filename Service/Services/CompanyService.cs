@@ -25,12 +25,12 @@ namespace IntegraHub.Service.Services
             {
                 var integration = await _environmentIntegrationService.AddNewClient(client);
 
-                if (integration == null || !integration.Success)
+                if (!integration.Success)
                     return integration;
             }
             catch (Exception ex)
             {
-                throw ex;
+                return ex;
             }
 
             Company company = new()
@@ -47,12 +47,48 @@ namespace IntegraHub.Service.Services
                 City = client.City,
                 State = client.State,
                 ZipCode = client.ZipCode,
-                Id = 0
+                Number = client.Number,
+                Id = 0,
             };
 
-            return (await Add<CompanyValidator>(company)).Id;
+            Company companySaved;
+
+            try
+            {
+                companySaved = await Add<CompanyValidator>(company);
+            }
+            catch (Exception ex)
+            {
+                await _environmentIntegrationService.RemoveClient(client);
+                return ex;
+            }
+
+            return companySaved.Id;
         }
 
+        public async Task<dynamic> UnregisterCompany(long id)
+        {
+            var company = await GetById(id);
+
+            if (company == null)
+                return false;
+
+            try
+            {
+                await _environmentIntegrationService.RemoveClient(new() { DomainName = company.DomainName });
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
+            company.IsActive = false;
+            company.UpdatedAt = DateTime.Now.ToUniversalTime();
+            company.CreatedAt = company.CreatedAt.HasValue ? company.CreatedAt.Value.ToUniversalTime() : DateTime.Now.ToUniversalTime();
+            await Update<CompanyValidator>(company);
+
+            return true;
+        }
 
     }
 }
